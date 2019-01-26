@@ -26,11 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/main.cpp \
     src/forms/mainwindow.cpp \
-#    src/services/dbservice.cpp
+    src/services/dbservice.cpp
 
 HEADERS += \
     src/forms/mainwindow.h \
-#    src/services/dbservice.h
+    src/services/dbservice.h
 
 FORMS += \
     src/forms/mainwindow.ui

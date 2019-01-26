@@ -1,6 +1,7 @@
-#include "mainwindow.h"
 #include <QApplication>
-#include <QtSql/>
+#include "./forms/mainwindow.h"
+#include "./services/dbservice.h"
+#include <memory>
 
 int main(int argc, char *argv[])
 {
