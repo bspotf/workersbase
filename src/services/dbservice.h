@@ -1,8 +1,16 @@
+/**
+ * DbService class written as Singleton implementation
+ * Has all that needed to manipulate with db in this project
+ */
+
 #ifndef DBSERVICE_H
 #define DBSERVICE_H
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <memory>
+#include <QSqlQuery>
+
 
 class DbService
 {
@@ -11,9 +19,15 @@ private:
     QSqlDatabase db;
     QSqlQuery query;
 
-public:
+    static DbService instance;
 
-    DbService();
+    DbService();                                // Private constructor
+//    virtual ~DbService();
+//    DbService(const DbService&) = delete;                // Prevent copy-construction
+//    DbService& operator=(const DbService&) = delete;   // Prevent assignment
+
+public:
+    static std::shared_ptr<DbService> getInstance();
 
     /**
      * @brief Opens the database, if not return -1
@@ -45,11 +59,26 @@ public:
     int insertRow(QString tableName, QString attributes);
 
     /**
+     * @brief find in table where
+     * @param tableName
+     * @param attributes
+     * @return
+     */
+    QSqlQuery find(QString tableName, QString attributes);
+
+    QSqlQuery findAndLeftJoin(
+        QString tableName,
+        QString attributes,
+        QString joinedTable,
+        QString joinCondition,
+        QString neededColumns = "*"
+    );
+    /**
      * @brief executes Query
      * @param query
      * @return
      */
-    int execute(QString query);
+    QSqlQuery execute(QString query);
 };
 
 #endif // DBSERVICE_H

@@ -8,6 +8,12 @@ DbService::DbService()
     this->query = QSqlQuery(this->db);
 }
 
+std::shared_ptr<DbService> DbService::getInstance()
+{
+    static DbService instance;
+    return std::make_shared<DbService>(instance);
+}
+
 int DbService::openDatabase(QString path)
 {
     this->db.setDatabaseName(path);
@@ -40,7 +46,6 @@ int DbService::insertTable(QString tableName, QString attributes)
 int DbService::insertRow(QString tableName, QString attributes)
 {
     this->query.prepare("INSERT INTO ? VALUES (?)");
-    this->query.addBindValue("Some text");
     this->query.addBindValue(tableName);
     this->query.addBindValue(attributes);
     if (!this->query.exec()) {
@@ -51,17 +56,32 @@ int DbService::insertRow(QString tableName, QString attributes)
     return 0;
 }
 
-int DbService::execute(QString query)
+QSqlQuery DbService::find(QString tableName, QString attributes)
 {
+    QString query = "SELECT * FROM " + tableName + " WHERE " + attributes;
+    return this->execute(query);
+}
+
+QSqlQuery DbService::findAndLeftJoin(
+    QString tableName,
+    QString attributes,
+    QString joinedTable,
+    QString joinCondition,
+    QString neededColumns
+)
+{
+    QString query = "SELECT " + neededColumns + " FROM " + tableName + " LEFT JOIN "
+            + joinedTable + " ON " + joinCondition + " WHERE " + attributes;
+    return this->execute(query);
+}
+
+QSqlQuery DbService::execute(QString query)
+{
+    qDebug(qPrintable(query));
     this->query.prepare(query);
     if (!this->query.exec()) {
         qDebug("Error occurred querying.");
         qDebug("%s.", qPrintable(this->db.lastError().text()));
-        return -1;
     }
-    while (this->query.next()) {
-        qDebug("id = %d, text = %s.", this->query.value(0).toInt(),
-               qPrintable(this->query.value(1).toString()));
-    }
-    return 0;
+    return this->query;
 }
