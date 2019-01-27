@@ -10,7 +10,6 @@ DbService::DbService()
 
 int DbService::openDatabase(QString path)
 {
-
     this->db.setDatabaseName(path);
     if (!this->db.open()) {
         qDebug("Error occurred opening the database.");
@@ -18,6 +17,11 @@ int DbService::openDatabase(QString path)
         return -1;
     }
     return 0;
+}
+
+void DbService::closeDatabase()
+{
+    this->db.close();
 }
 
 int DbService::insertTable(QString tableName, QString attributes)
@@ -33,10 +37,12 @@ int DbService::insertTable(QString tableName, QString attributes)
     return 0;
 }
 
-int DbService::insertRow()
+int DbService::insertRow(QString tableName, QString attributes)
 {
-    this->query.prepare("INSERT INTO test VALUES (null, ?)");
+    this->query.prepare("INSERT INTO ? VALUES (?)");
     this->query.addBindValue("Some text");
+    this->query.addBindValue(tableName);
+    this->query.addBindValue(attributes);
     if (!this->query.exec()) {
         qDebug("Error occurred inserting.");
         qDebug("%s.", qPrintable(this->db.lastError().text()));
@@ -45,9 +51,9 @@ int DbService::insertRow()
     return 0;
 }
 
-int DbService::executeQuery()
+int DbService::execute(QString query)
 {
-    this->query.prepare("SELECT * FROM test");
+    this->query.prepare(query);
     if (!this->query.exec()) {
         qDebug("Error occurred querying.");
         qDebug("%s.", qPrintable(this->db.lastError().text()));
