@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
     src/forms/mainwindow.h \
     src/services/dbservice.h \
-    src/services/salaryservice.h
+    src/services/salaryservice.h \
+    src/helpers/datetimehelper.h
 
 FORMS += \
     src/forms/mainwindow.ui
