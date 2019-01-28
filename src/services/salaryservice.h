@@ -13,11 +13,14 @@ public:
 
     double getWorkersSalary(int id, int date);
     double countSalaryExpences();
+    double getYearsOfWorkPercent(double percentPerYear, int years, double yearIncreasePercentBorder);
 private:
-    double countSalary(int baseSalary,
-                       double percentPerYer,
-                       double percentForEmployees,
-                       int years);
+    double countSalary(
+            int baseSalary,
+            double percentPerYear,
+            int years,
+            double yearIncreasePercentBorder,
+            double percentForEmployees);
 };
 
 #endif // SALARYSERVICE_H
