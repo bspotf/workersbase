@@ -7,78 +7,119 @@
 #include <QVariant>
 
 
+
+
 SalaryService::SalaryService()
 {
 
 }
 
-double SalaryService::getWorkersSalary(int id, int date)
+double SalaryService::getWorkerSalary(int id, int date)
 {
-    auto dBService = DbService::getInstance();
+    auto worker = this->getWorkerSalaryParams(id);
 
-    QSqlQuery result =
-            dBService->findAndLeftJoin(
+    double salary = this->countEmployeeSalary(
+                worker->baseSalary,
+                worker->percentPerYear,
+                getYears(date - worker->dateOfEmployment),
+                worker->yearIncreasePercentBorder);
+
+    std::vector<int> managedEmployees;
+
+    switch (worker->employeeLevelBonus) {
+    case ALL: {
+        managedEmployees = getAllManagedEmployees(id);
+        break;
+    }
+    case FIRST:
+        managedEmployees = this->getmanagedEmploees(id);
+        break;
+    case NONE:
+    default:
+        break;
+    }
+    for (auto mE : managedEmployees)
+    {
+        salary += worker->percentForEmployees * this->getWorkerSalary(mE, date);
+    }
+    return salary;
+}
+
+std::shared_ptr<WorkerSalaryParams> SalaryService::getWorkerSalaryParams(int& id)
+{
+    QSqlQuery employee = DbService::getInstance()->findAndLeftJoin(
                 "worker w",
                 "w.id = " + QString::number(id),
                 "salary_rule sr",
                 "w.type_id = sr.worker_type_id",
-                "w.id, w.date_of_employment, sr.base_salary,"
+                "w.id, w.date_of_employment, w.type_id, sr.base_salary,"
                 "sr.year_increase, sr.year_increase_percent_border,"
                 "sr.employee_percent, sr.employee_level_bonus"
             );
 
-//    while (result.first()) {
-//        qDebug("id = %d, text = %s.", result.value(1).toInt(),
-//               qPrintable(result.value(2).toString()));
-//    }
-    result.first();
-    int dateOfEmployment = result.value(1).toInt();
-    double baseSalary = result.value(2).toDouble();
-    double percentPerYear = result.value(3).toDouble();
-    double yearIncreasePercentBorder = result.value(4).toDouble();
-    double percentForEmployees = result.value(5).toDouble();
-    double employeeLevelBonus = result.value(6).toDouble();
 
-    if (date < dateOfEmployment) {
-        return 0;
-    }
-    int years = getYears(date - dateOfEmployment);
+    employee.first();
 
-    double salary = this->countSalary(
-                baseSalary,
-                percentPerYear,
-                years,
-                yearIncreasePercentBorder,
-                percentForEmployees);
-    return salary;
-//    auto a = result;
-// return a;
+    WorkerSalaryParams workerSalaryParams(
+                    id,
+                    employee.value(1).toInt(),
+                    employee.value(2).toInt(),
+                    employee.value(3).toDouble(),
+                    employee.value(4).toDouble(),
+                    employee.value(5).toDouble(),
+                    employee.value(6).toDouble(),
+                    employee.value(7).toInt()
+                );
+
+    return std::make_shared<WorkerSalaryParams>(workerSalaryParams);
 }
 
-/**
- * @brief Counts salary for a worker
- * Base salary + percent per year
- * (not  higher then percentage)
- * + percentage of low leveled managed employees.
- * @param baseSalary
- * @param percentPerYer
- * @param percentForEmployees
- * @param years
- * @return
- */
-double SalaryService::countSalary(
+std::vector<int> SalaryService::getmanagedEmploees(int& id)
+{
+    QSqlQuery managedEmployees = DbService::getInstance()->findAndLeftJoin(
+                "worker w",
+                "w.id = " + QString::number(id) + " AND r.employee_id NOT NULL",
+                "relation r",
+                "r.manager_id = w.id",
+                "w.id, w.type_id,r.employee_id"
+            );
+
+    std::vector<int> employeeIds;
+
+    while(managedEmployees.next())
+    {
+        employeeIds.push_back(managedEmployees.value(2).toInt());
+    }
+    return employeeIds;
+}
+
+std::vector<int> SalaryService::getAllManagedEmployees(int& id)
+{
+    std::vector<int> employeeIds = this->getmanagedEmploees(id);
+    for (auto e : employeeIds)
+    {
+       std::vector<int> tmp = this->getAllManagedEmployees(e);
+       employeeIds.insert( employeeIds.end(), tmp.begin(), tmp.end());
+    }
+    return employeeIds;
+}
+
+double SalaryService::countEmployeeSalary(
     int baseSalary,
     double percentPerYear,
     int years,
-    double yearIncreasePercentBorder,
-    double percentForEmployees)
+    double yearIncreasePercentBorder)
 {
     double yearsOfWorkPercent =
             this->getYearsOfWorkPercent(percentPerYear, years, yearIncreasePercentBorder);
-
     double total =
-            (this->WHOLE_SALARY_PART + yearsOfWorkPercent + percentForEmployees) * baseSalary;
+            (this->WHOLE_SALARY_PART + yearsOfWorkPercent) * baseSalary;
     return total;
+}
+
+double SalaryService::countManagerSalary(double ownSalary, double percentForEmployees)
+{
+
 }
 
 double SalaryService::getYearsOfWorkPercent(double percentPerYear, int years, double yearIncreasePercentBorder)
@@ -90,6 +131,8 @@ double SalaryService::getYearsOfWorkPercent(double percentPerYear, int years, do
     }
     return yearIncreasePercentBorder;
 }
+
+
 
 double SalaryService::countSalaryExpences()
 {
