@@ -17,7 +17,6 @@
  * @brief The WorkerSalaryParams struct
  */
 struct WorkerSalaryParams{
-
     int id;
     int dateOfEmployment;
     int workerType;
@@ -46,6 +45,25 @@ struct WorkerSalaryParams{
         this->yearIncreasePercentBorder = yearIncreasePercentBorder;
         this->percentForEmployees = percentForEmployees;
         this->employeeLevelBonus = employeeLevelBonus;
+    }
+};
+
+struct Worker{
+    int id;
+    QString name;
+    QString patronimic;
+    QString surname;
+    double baseSalary;
+    QString type;
+
+    Worker(int id, QString name, QString patronimic, QString surname, double baseSalary, QString type)
+    {
+        this->id = id;
+        this->name = name;
+        this->patronimic = patronimic;
+        this->surname = surname;
+        this->baseSalary = baseSalary;
+        this->type = type;
     }
 };
 
@@ -121,6 +139,19 @@ public:
                         employee.value(7).toInt()
                     );
         return std::make_shared<WorkerSalaryParams>(workerSalaryParams);
+    }
+
+    static QSqlQuery getWorkers(QString condition = "w.id NOT NULL")
+    {
+        condition = (condition != "") ? condition : "w.id NOT NULL";
+        auto query = DbService::getInstance()->findAndLeftJoin(
+                    "worker w",
+                    condition,
+                    "worker_type wt",
+                    "wt.id = w.type_id",
+                    "w.id, w.name, w.patronimic, w.surname, w.base_salary, wt.type as type"
+                );
+        return query;
     }
 };
 #endif // WORKERHELPER_H

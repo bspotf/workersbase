@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "./src/services/salaryservice.h"
+#include "./src/services/dbservice.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,7 +23,13 @@ private slots:
 
     void on_pushButtonCount_clicked();
 
+    void on_pushButtonFind_clicked();
+
 private:
+
+    void showTableWidget(std::vector<Worker>& workers);
+    QString getCondition();
+    void setTableItem(int row, int column,QString item);
     Ui::MainWindow *ui;
 };
 
