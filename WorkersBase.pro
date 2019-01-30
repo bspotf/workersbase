@@ -27,14 +27,16 @@ SOURCES += \
     src/main.cpp \
     src/forms/mainwindow.cpp \
     src/services/dbservice.cpp \
-    src/services/salaryservice.cpp
+    src/services/salaryservice.cpp \
+    src/services/log.cpp
 
 HEADERS += \
     src/forms/mainwindow.h \
     src/services/dbservice.h \
     src/services/salaryservice.h \
     src/helpers/datetimehelper.h \
-    src/helpers/workerhelper.h
+    src/helpers/workerhelper.h \
+    src/services/log.h
 
 FORMS += \
     src/forms/mainwindow.ui
