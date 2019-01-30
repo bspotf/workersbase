@@ -90,16 +90,16 @@
        <hour>23</hour>
        <minute>59</minute>
        <second>59</second>
-       <year>2037</year>
+       <year>7999</year>
        <month>12</month>
-       <day>30</day>
+       <day>31</day>
       </datetime>
      </property>
      <property name="maximumDate">
       <date>
-       <year>2037</year>
+       <year>7999</year>
        <month>12</month>
-       <day>30</day>
+       <day>31</day>
       </date>
      </property>
      <property name="displayFormat">

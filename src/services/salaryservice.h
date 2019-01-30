@@ -28,7 +28,7 @@ public:
      * @param date
      * @return double
      */
-    double getWorkerSalary(int id, int date = std::time(0));
+    double getWorkerSalary(int id, int64_t date = std::time(0));
 
     /**
      * Returns addition for years of work
@@ -49,7 +49,7 @@ public:
      * @param date
      * @return double
      */
-    double countSalaryExpences(int date);
+    double countSalaryExpences(int64_t date);
 
 private:
 

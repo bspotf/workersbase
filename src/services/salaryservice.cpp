@@ -6,7 +6,7 @@ SalaryService::SalaryService()
 
 }
 
-double SalaryService::getWorkerSalary(int id, int date)
+double SalaryService::getWorkerSalary(int id, int64_t date)
 {
     auto worker = WorkerHelper::getWorkerSalaryParams(id);
 
@@ -66,7 +66,7 @@ double SalaryService::getYearsOfWorkPercent(double percentPerYear, int years, do
     return yearIncreasePercentBorder;
 }
 
-double SalaryService::countSalaryExpences(int date)
+double SalaryService::countSalaryExpences(int64_t date)
 {
     QSqlQuery workers = DbService::getInstance()->execute("SELECT w.id FROM worker w");
     double total;

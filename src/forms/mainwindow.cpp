@@ -44,7 +44,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonCountAllSalary_clicked()
 {
-    int time = ui->dateEditAllSalary->dateTime().toTime_t();
+    int64_t time = ui->dateEditAllSalary->dateTime().toMSecsSinceEpoch()/1000;
 
     double allSalary = salaryService->countSalaryExpences(time);
     ui->labelAllSalary->setText(QString::number(allSalary, 'f', 2));
@@ -53,8 +53,9 @@ void MainWindow::on_pushButtonCountAllSalary_clicked()
 void MainWindow::on_pushButtonCount_clicked()
 {
     int id = 1;
-    int time = ui->dateEdit->dateTime().toTime_t();
+    int64_t time = ui->dateEdit->dateTime().toMSecsSinceEpoch()/1000;
 
     double allSalary = salaryService->getWorkerSalary(id,time);
     ui->labelWorkerSalary->setText(QString::number(allSalary, 'f', 2));
 }
+
