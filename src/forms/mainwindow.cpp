@@ -3,12 +3,16 @@
 
 #include "QtSql/QSqlDatabase"
 #include "QSqlQuery"
+#include <ctime>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->dateEdit->setDateTime(QDateTime::currentDateTime());
+    ui->dateEditAllSalary->setDateTime(QDateTime::currentDateTime());
 
     ui->tableWidget->setRowCount(20); // указываем количество строк
         ui->tableWidget->setColumnCount(5); // указываем количество столбцов
@@ -36,4 +40,21 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_pushButtonCountAllSalary_clicked()
+{
+    int time = ui->dateEditAllSalary->dateTime().toTime_t();
+
+    double allSalary = salaryService->countSalaryExpences(time);
+    ui->labelAllSalary->setText(QString::number(allSalary, 'f', 2));
+}
+
+void MainWindow::on_pushButtonCount_clicked()
+{
+    int id = 1;
+    int time = ui->dateEdit->dateTime().toTime_t();
+
+    double allSalary = salaryService->getWorkerSalary(id,time);
+    ui->labelWorkerSalary->setText(QString::number(allSalary, 'f', 2));
 }

@@ -1,6 +1,8 @@
 #ifndef SALARYSERVICE_H
 #define SALARYSERVICE_H
 
+#define WHOLE_SALARY_PART 1
+
 #include "../helpers/workerhelper.h"
 
 #include <QSqlDatabase>
@@ -12,14 +14,14 @@
 class SalaryService
 {
 public:
-    const int WHOLE_SALARY_PART = 1;
 
     enum WORKERS {NONE, FIRST, ALL};
 
     SalaryService();
 
     /**
-     * returns worker salary including all his employees percentage
+     * Returns worker salary including all his employees percentage
+     * Hope there is no need to calculate salary after 2038 year
      *
      * @brief getWorkerSalary
      * @param id
@@ -29,7 +31,7 @@ public:
     double getWorkerSalary(int id, int date = std::time(0));
 
     /**
-     * returns addition for years of work
+     * Returns addition for years of work
      * not higher than yearIncreasePercentBorder
      *
      * @brief getYearsOfWorkPercent

@@ -105,7 +105,7 @@ public:
                     "w.id = " + QString::number(id),
                     "salary_rule sr",
                     "w.type_id = sr.worker_type_id",
-                    "w.id, w.date_of_employment, w.type_id, sr.base_salary,"
+                    "w.id, w.date_of_employment, w.type_id, w.base_salary,"
                     "sr.year_increase, sr.year_increase_percent_border,"
                     "sr.employee_percent, sr.employee_level_bonus"
                 );

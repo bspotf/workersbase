@@ -10,6 +10,11 @@ double SalaryService::getWorkerSalary(int id, int date)
 {
     auto worker = WorkerHelper::getWorkerSalaryParams(id);
 
+    if (date < worker->dateOfEmployment)
+    {
+        return 0;
+    }
+
     double salary = this->countEmployeeSalary(
                 worker->baseSalary,
                 worker->percentPerYear,
@@ -47,7 +52,7 @@ double SalaryService::countEmployeeSalary(
                 percentPerYear,
                 years,
                 yearIncreasePercentBorder);
-    double total = (this->WHOLE_SALARY_PART + yearsOfWorkPercent) * baseSalary;
+    double total = (WHOLE_SALARY_PART + yearsOfWorkPercent) * baseSalary;
     return total;
 }
 
@@ -67,6 +72,7 @@ double SalaryService::countSalaryExpences(int date)
     double total;
     while(workers.next())
     {
+        double id = workers.value(0).toInt();
         total += this->getWorkerSalary(workers.value(0).toInt(), date);
     }
     return total;
