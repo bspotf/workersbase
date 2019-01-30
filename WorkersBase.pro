@@ -33,7 +33,8 @@ HEADERS += \
     src/forms/mainwindow.h \
     src/services/dbservice.h \
     src/services/salaryservice.h \
-    src/helpers/datetimehelper.h
+    src/helpers/datetimehelper.h \
+    src/helpers/workerhelper.h
 
 FORMS += \
     src/forms/mainwindow.ui

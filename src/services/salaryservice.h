@@ -1,46 +1,13 @@
 #ifndef SALARYSERVICE_H
 #define SALARYSERVICE_H
 
+#include "../helpers/workerhelper.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <memory>
+
 #include <vector>
 #include <ctime>
-
-
-struct WorkerSalaryParams{
-
-    int id;
-    int dateOfEmployment;
-    int workerType;
-    double baseSalary;
-    double percentPerYear;
-    double yearIncreasePercentBorder;
-    double percentForEmployees;
-    int employeeLevelBonus;
-
-    WorkerSalaryParams(
-            int id,
-            int dateOfEmployment,
-            int workerType,
-            double baseSalary,
-            double percentPerYear,
-            double yearIncreasePercentBorder,
-            double percentForEmployees,
-            int employeeLevelBonus
-        )
-    {
-        this->id = id;
-        this->dateOfEmployment = dateOfEmployment;
-        this->workerType = workerType;
-        this->baseSalary = baseSalary;
-        this->percentPerYear = percentPerYear;
-        this->yearIncreasePercentBorder = yearIncreasePercentBorder;
-        this->percentForEmployees = percentForEmployees;
-        this->employeeLevelBonus = employeeLevelBonus;
-    }
-};
 
 class SalaryService
 {
@@ -51,34 +18,58 @@ public:
 
     SalaryService();
 
-    double getWorkerSalary(int id, int date = std::time(0));
-    std::shared_ptr<WorkerSalaryParams> getWorkerSalaryParams(int& id);
-    std::vector<int> getmanagedEmploees(int& id);
-    std::vector<int> getAllManagedEmployees(int& id);
-    double countSalaryExpences();
-    double getYearsOfWorkPercent(double percentPerYear, int years, double yearIncreasePercentBorder);
-    double countSalaryExpences(int date);
-private:
     /**
-     * @brief Counts salary for a worker
+     * returns worker salary including all his employees percentage
+     *
+     * @brief getWorkerSalary
+     * @param id
+     * @param date
+     * @return double
+     */
+    double getWorkerSalary(int id, int date = std::time(0));
+
+    /**
+     * returns addition for years of work
+     * not higher than yearIncreasePercentBorder
+     *
+     * @brief getYearsOfWorkPercent
+     * @param percentPerYear
+     * @param years
+     * @param yearIncreasePercentBorder
+     * @return double
+     */
+    double getYearsOfWorkPercent(double percentPerYear, int years, double yearIncreasePercentBorder);
+
+    /**
+     * Counts all salary expences on date
+     *
+     * @brief countSalaryExpences
+     * @param date
+     * @return double
+     */
+    double countSalaryExpences(int date);
+
+private:
+
+    /**
+     * Counts salary only for a worker
+     * without his employees
      * Base salary + percent per year
      * (not  higher then percentage)
+     *
+     * @brief countEmployeeSalary
      * @param baseSalary
      * @param percentPerYear
      * @param years
      * @param yearIncreasePercentBorder
      * @param percentForEmployees
-     * @return
+     * @return double
      */
     double countEmployeeSalary(
             int baseSalary,
             double percentPerYear,
             int years,
             double yearIncreasePercentBorder);
-
-
-    double countManagerSalary(double ownSalary, double percentForEmployees);
-
 };
 
 #endif // SALARYSERVICE_H
