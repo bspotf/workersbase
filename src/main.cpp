@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     QString query = "SELECT * FROM worker";
 
 
-//    QString query = "SELECT id, name, patronimic FROM worker WHERE id = 1;";
     QSqlQuery result = dBService->execute(query);
     result = dBService->find("worker", "worker.id = 1");
     while (result.next()) {
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
                qPrintable(result.value(1).toString()));
     }
 
-    return 0;
+//    return 0;
 
     MainWindow w;
     w.show();
