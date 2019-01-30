@@ -132,9 +132,13 @@ double SalaryService::getYearsOfWorkPercent(double percentPerYear, int years, do
     return yearIncreasePercentBorder;
 }
 
-
-
-double SalaryService::countSalaryExpences()
+double SalaryService::countSalaryExpences(int date)
 {
-
+    QSqlQuery workers = DbService::getInstance()->execute("SELECT w.id FROM worker w");
+    double total;
+    while(workers.next())
+    {
+        total += this->getWorkerSalary(workers.value(0).toInt(), date);
+    }
+    return total;
 }

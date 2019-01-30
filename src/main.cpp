@@ -16,7 +16,8 @@ int main(int argc, char *argv[])
     std::shared_ptr<DbService> dBService = DbService::getInstance();
     dBService->closeDatabase();
     dBService->openDatabase();
-    (new SalaryService)->getWorkersSalary(1, std::time(0));
+    (new SalaryService)->getWorkerSalary(6);
+    (new SalaryService)->countSalaryExpences(std::time(0));
     QString query = "SELECT * FROM worker";
 
 

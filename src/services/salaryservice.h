@@ -57,12 +57,12 @@ public:
     std::vector<int> getAllManagedEmployees(int& id);
     double countSalaryExpences();
     double getYearsOfWorkPercent(double percentPerYear, int years, double yearIncreasePercentBorder);
+    double countSalaryExpences(int date);
 private:
     /**
      * @brief Counts salary for a worker
      * Base salary + percent per year
      * (not  higher then percentage)
-     * + percentage of low leveled managed employees.
      * @param baseSalary
      * @param percentPerYear
      * @param years
@@ -76,7 +76,9 @@ private:
             int years,
             double yearIncreasePercentBorder);
 
+
     double countManagerSalary(double ownSalary, double percentForEmployees);
+
 };
 
 #endif // SALARYSERVICE_H
