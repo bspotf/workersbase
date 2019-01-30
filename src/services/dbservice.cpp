@@ -77,7 +77,6 @@ QSqlQuery DbService::findAndLeftJoin(
 
 QSqlQuery DbService::execute(QString query)
 {
-    qDebug(qPrintable(query));
     this->query.prepare(query);
     if (!this->query.exec()) {
         qDebug("Error occurred querying.");

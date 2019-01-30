@@ -2,12 +2,18 @@
 #define LOG_H
 
 #include <string>
+#include <memory>
 
 class Log
 {
 public:
-    Log();
-    void writeError(const std::string& message);
+
+    static std::shared_ptr<Log> getInstance();
+
+    void error(const std::string& message);
+    void warning(const std::string& message);
+    void message(const std::string& message);
+    void writeMessage(int debugLevel, const std::string& message);
 
     enum DebugLevel
     {
@@ -22,9 +28,9 @@ public:
         MESSAGE_WARNING,
         MESSAGE_ERROR,
     };
-    static void createInstance();
     void setDebugLevel(DebugLevel level);
 protected:
+    Log();
     void appendToFile(const std::string& message);
 private:
     DebugLevel debugLevel;
