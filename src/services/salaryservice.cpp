@@ -73,7 +73,7 @@ double SalaryService::countSalaryExpences(int64_t date)
     while(workers.next())
     {
         double id = workers.value(0).toInt();
-        total += this->getWorkerSalary(workers.value(0).toInt(), date);
+        total += this->getWorkerSalary(id, date);
     }
     return total;
 }
