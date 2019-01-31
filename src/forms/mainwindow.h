@@ -25,6 +25,8 @@ private slots:
 
     void on_pushButtonFind_clicked();
 
+    void on_pushButtonCreateNew_clicked();
+
 private:
 
     void showTableWidget(std::vector<Worker>& workers);

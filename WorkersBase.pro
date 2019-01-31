@@ -28,7 +28,8 @@ SOURCES += \
     src/forms/mainwindow.cpp \
     src/services/dbservice.cpp \
     src/services/salaryservice.cpp \
-    src/services/log.cpp
+    src/services/log.cpp \
+    src/forms/createworkerform.cpp
 
 HEADERS += \
     src/forms/mainwindow.h \
@@ -36,7 +37,9 @@ HEADERS += \
     src/services/salaryservice.h \
     src/helpers/datetimehelper.h \
     src/helpers/workerhelper.h \
-    src/services/log.h
+    src/services/log.h \
+    src/forms/createworkerform.h
 
 FORMS += \
-    src/forms/mainwindow.ui
+    src/forms/mainwindow.ui \
+    src/forms/createworkerform.ui

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "createworkerform.h"
 #include "ui_mainwindow.h"
 #include "./src/helpers/workerhelper.h"
 
@@ -14,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->dateEdit->setDateTime(QDateTime::currentDateTime());
     ui->dateEditAllSalary->setDateTime(QDateTime::currentDateTime());
-
 }
 
 MainWindow::~MainWindow()
@@ -118,4 +118,10 @@ void MainWindow::setTableItem(int row, int column,QString item)
     QTableWidgetItem *widgetItem = new QTableWidgetItem();
     widgetItem->setText(item);
     ui->tableWidget->setItem(row, column, widgetItem);
+}
+
+void MainWindow::on_pushButtonCreateNew_clicked()
+{
+    CreateWorkerForm *w = new CreateWorkerForm();
+    w->show();
 }

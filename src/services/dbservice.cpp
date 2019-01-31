@@ -50,7 +50,8 @@ int DbService::insertRow(QString tableName, QString attributes)
     this->query.addBindValue(attributes);
     if (!this->query.exec()) {
         qDebug("Error occurred inserting.");
-        qDebug("%s.", qPrintable(this->db.lastError().text()));
+        qDebug("%s.", qPrintable(this->query.lastError().text()));
+//        qDebug("%s.", qPrintable(this->db.lastError().text()));
         return -1;
     }
     return 0;
