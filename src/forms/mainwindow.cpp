@@ -32,7 +32,7 @@ void MainWindow::on_pushButtonCountAllSalary_clicked()
 
 void MainWindow::on_pushButtonCount_clicked()
 {
-    int id = 1;
+    int id = ui->textEditIdManager->toPlainText().toInt();
     int64_t time = ui->dateEdit->dateTime().toMSecsSinceEpoch()/1000;
 
     double allSalary = salaryService->getWorkerSalary(id,time);
@@ -43,6 +43,12 @@ void MainWindow::on_pushButtonFind_clicked()
 {
     QString condition = this->getCondition();
     auto query = WorkerHelper::getWorkers(condition);
+    std::vector<Worker> workers = this->createWorkersList(query);
+
+    this->showTableWidget(workers);
+}
+
+std::vector<Worker> MainWindow::createWorkersList(QSqlQuery& query){
     std::vector<Worker> workers;
     while(query.next())
     {
@@ -56,7 +62,7 @@ void MainWindow::on_pushButtonFind_clicked()
                     );
         workers.push_back(worker);
     }
-    this->showTableWidget(workers);
+    return workers;
 }
 
 QString MainWindow::getCondition(){
@@ -124,4 +130,22 @@ void MainWindow::on_pushButtonCreateNew_clicked()
 {
     CreateWorkerForm *w = new CreateWorkerForm();
     w->show();
+}
+
+void MainWindow::on_pushButtonSeeWorkers_clicked()
+{
+    int managerId = ui->textEditIdManager->toPlainText().toInt();
+    auto employees = WorkerHelper::getmanagedEmploees(managerId);
+    QString condition = "w.id in (";
+    for (int i = 1, sz = employees.size(); i <= employees.size(); i++)
+    {
+        condition += QString::number(employees[i-1]);
+        if (i !=sz){
+            condition += ",";
+        }
+    }
+    condition += ")";
+    auto query = WorkerHelper::getWorkers(condition);
+    std::vector<Worker> workers = this->createWorkersList(query);
+    this->showTableWidget(workers);
 }

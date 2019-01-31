@@ -33,53 +33,14 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>90</y>
       <width>631</width>
-      <height>311</height>
+      <height>331</height>
      </rect>
     </property>
     <property name="title">
      <string>Workers</string>
     </property>
-    <widget class="QPushButton" name="pushButtonCount">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>190</y>
-       <width>100</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Count</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelCountSalary">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>190</y>
-       <width>101</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Count salary on</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonSeeWorkers">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>190</y>
-       <width>150</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>See managed workers</string>
-     </property>
-    </widget>
     <widget class="QTableWidget" name="tableWidget">
      <property name="geometry">
       <rect>
@@ -90,54 +51,12 @@
       </rect>
      </property>
     </widget>
-    <widget class="QDateEdit" name="dateEdit">
-     <property name="geometry">
-      <rect>
-       <x>420</x>
-       <y>190</y>
-       <width>91</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="maximumDate">
-      <date>
-       <year>7937</year>
-       <month>12</month>
-       <day>31</day>
-      </date>
-     </property>
-     <property name="displayFormat">
-      <string>dd.MM.yyyy</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="labelWorkerSalary">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>230</y>
-       <width>100</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBoxAllSalary">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
-       <width>341</width>
+       <y>245</y>
+       <width>340</width>
        <height>70</height>
       </rect>
      </property>
@@ -223,18 +142,141 @@
       <string>Add new</string>
      </property>
     </widget>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>165</y>
+       <width>240</width>
+       <height>150</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <widget class="QPushButton" name="pushButtonCount">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>110</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Count</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonSeeWorkers">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>30</y>
+        <width>150</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>See managed workers</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>75</y>
+        <width>101</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="maximumDate">
+       <date>
+        <year>7937</year>
+        <month>12</month>
+        <day>31</day>
+       </date>
+      </property>
+      <property name="displayFormat">
+       <string>dd.MM.yyyy</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelIdManager">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>16</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Id</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEditIdManager">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>41</width>
+        <height>30</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelWorkerSalary">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>110</y>
+        <width>111</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelCountSalary">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>75</y>
+        <width>111</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Count salary on</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBoxFindWorker">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>-7</y>
       <width>631</width>
       <height>91</height>
      </rect>
     </property>
     <property name="title">
-     <string>Find worker</string>
+     <string/>
     </property>
     <widget class="QPushButton" name="pushButtonFind">
      <property name="geometry">

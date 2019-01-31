@@ -27,8 +27,11 @@ private slots:
 
     void on_pushButtonCreateNew_clicked();
 
+    void on_pushButtonSeeWorkers_clicked();
+
 private:
 
+    std::vector<Worker> createWorkersList(QSqlQuery& query);
     void showTableWidget(std::vector<Worker>& workers);
     QString getCondition();
     void setTableItem(int row, int column,QString item);
