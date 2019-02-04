@@ -7,6 +7,7 @@
 #include "QtSql/QSqlDatabase"
 #include <QSqlQuery>
 #include <QDateTime>
+#include <searchhelper.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,58 +42,18 @@ void MainWindow::on_pushButtonCount_clicked()
 
 void MainWindow::on_pushButtonFind_clicked()
 {
-    QString condition = this->getCondition();
+
+    QString condition = SearchHelper::getSearchCondition(
+        this->ui->textEditId->toPlainText(),
+        this->ui->textEditName->toPlainText(),
+        this->ui->textEditPatronimyc->toPlainText(),
+        this->ui->textEditSurname->toPlainText()
+    );
+
     auto query = WorkerHelper::getWorkers(condition);
-    std::vector<Worker> workers = this->createWorkersList(query);
+    std::vector<Worker> workers = WorkerHelper::createWorkersList(query);
 
     this->showTableWidget(workers);
-}
-
-std::vector<Worker> MainWindow::createWorkersList(QSqlQuery& query){
-    std::vector<Worker> workers;
-    while(query.next())
-    {
-        Worker worker(
-                    query.value(0).toInt(),
-                    query.value(1).toString(),
-                    query.value(2).toString(),
-                    query.value(3).toString(),
-                    query.value(4).toDouble(),
-                    query.value(5).toString()
-                    );
-        workers.push_back(worker);
-    }
-    return workers;
-}
-
-QString MainWindow::getCondition(){
-    QString condition;
-    if (this->ui->textEditId->toPlainText() != "")
-    {
-        condition += "w.id = " + this->ui->textEditId->toPlainText() + " ";
-    }
-    if (this->ui->textEditName->toPlainText() != "")
-    {
-        if (condition != ""){
-            condition += "AND ";
-        }
-        condition += "w.name LIKE \'" + this->ui->textEditName->toPlainText() + "%\' ";
-    }
-    if (this->ui->textEditPatronimyc->toPlainText() != "")
-    {
-        if (condition != ""){
-            condition += "AND ";
-        }
-        condition += "w.patronimic LIKE \'" + this->ui->textEditPatronimyc->toPlainText() + "%\' ";
-    }
-    if (this->ui->textEditSurname->toPlainText() != "")
-    {
-        if (condition != ""){
-            condition += "AND ";
-        }
-        condition += "w.surname LIKE \'" + this->ui->textEditSurname->toPlainText() + "%\' ";
-    }
-    return condition;
 }
 
 void MainWindow::showTableWidget(std::vector<Worker>& workers)
@@ -135,17 +96,8 @@ void MainWindow::on_pushButtonCreateNew_clicked()
 void MainWindow::on_pushButtonSeeWorkers_clicked()
 {
     int managerId = ui->textEditIdManager->toPlainText().toInt();
-    auto employees = WorkerHelper::getmanagedEmploees(managerId);
-    QString condition = "w.id in (";
-    for (int i = 1, sz = employees.size(); i <= employees.size(); i++)
-    {
-        condition += QString::number(employees[i-1]);
-        if (i !=sz){
-            condition += ",";
-        }
-    }
-    condition += ")";
+    QString condition = SearchHelper::getManagedWorkersCondition(managerId);
     auto query = WorkerHelper::getWorkers(condition);
-    std::vector<Worker> workers = this->createWorkersList(query);
+    std::vector<Worker> workers = WorkerHelper::createWorkersList(query);
     this->showTableWidget(workers);
 }

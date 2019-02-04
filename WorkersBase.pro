@@ -38,7 +38,8 @@ HEADERS += \
     src/helpers/datetimehelper.h \
     src/helpers/workerhelper.h \
     src/services/log.h \
-    src/forms/createworkerform.h
+    src/forms/createworkerform.h \
+    searchhelper.h
 
 FORMS += \
     src/forms/mainwindow.ui \

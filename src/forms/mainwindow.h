@@ -31,9 +31,7 @@ private slots:
 
 private:
 
-    std::vector<Worker> createWorkersList(QSqlQuery& query);
     void showTableWidget(std::vector<Worker>& workers);
-    QString getCondition();
     void setTableItem(int row, int column,QString item);
     Ui::MainWindow *ui;
 };

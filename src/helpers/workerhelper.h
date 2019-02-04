@@ -153,5 +153,22 @@ public:
                 );
         return query;
     }
+
+    static std::vector<Worker> createWorkersList(QSqlQuery& query){
+        std::vector<Worker> workers;
+        while(query.next())
+        {
+            Worker worker(
+                        query.value(0).toInt(),
+                        query.value(1).toString(),
+                        query.value(2).toString(),
+                        query.value(3).toString(),
+                        query.value(4).toDouble(),
+                        query.value(5).toString()
+                        );
+            workers.push_back(worker);
+        }
+        return workers;
+    }
 };
 #endif // WORKERHELPER_H
