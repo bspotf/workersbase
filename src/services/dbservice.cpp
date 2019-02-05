@@ -51,15 +51,20 @@ int DbService::insertRow(QString tableName, QString attributes)
     if (!this->query.exec()) {
         qDebug("Error occurred inserting.");
         qDebug("%s.", qPrintable(this->query.lastError().text()));
-//        qDebug("%s.", qPrintable(this->db.lastError().text()));
+        qDebug("%s.", qPrintable(this->db.lastError().text()));
         return -1;
     }
     return 0;
 }
 
-QSqlQuery DbService::find(QString tableName, QString attributes)
+QSqlQuery DbService::find(QString tableName, QString neededColumns, QString attributes)
 {
-    QString query = "SELECT * FROM " + tableName + " WHERE " + attributes;
+
+    QString query = "SELECT " + neededColumns + " FROM " + tableName;
+    if (attributes != "")
+    {
+        query += " WHERE " + attributes;
+    }
     return this->execute(query);
 }
 
@@ -69,8 +74,7 @@ QSqlQuery DbService::findAndLeftJoin(
     QString joinedTable,
     QString joinCondition,
     QString neededColumns
-)
-{
+) {
     QString query = "SELECT " + neededColumns + " FROM " + tableName + " LEFT JOIN "
             + joinedTable + " ON " + joinCondition + " WHERE " + attributes;
     return this->execute(query);

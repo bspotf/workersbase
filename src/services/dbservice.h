@@ -21,10 +21,7 @@ private:
 
     static DbService instance;
 
-    DbService();                                // Private constructor
-//    virtual ~DbService();
-//    DbService(const DbService&) = delete;                // Prevent copy-construction
-//    DbService& operator=(const DbService&) = delete;   // Prevent assignment
+    DbService();
 
 public:
     static std::shared_ptr<DbService> getInstance();
@@ -59,13 +56,23 @@ public:
     int insertRow(QString tableName, QString attributes);
 
     /**
-     * @brief find in table where
+     * @brief DbService::find
      * @param tableName
+     * @param neededColumns
      * @param attributes
      * @return
      */
-    QSqlQuery find(QString tableName, QString attributes);
+    QSqlQuery find(QString tableName, QString neededColumns, QString attributes = "");
 
+    /**
+     * @brief findAndLeftJoin
+     * @param tableName
+     * @param attributes
+     * @param joinedTable
+     * @param joinCondition
+     * @param neededColumns
+     * @return
+     */
     QSqlQuery findAndLeftJoin(
         QString tableName,
         QString attributes,
