@@ -207,10 +207,11 @@ public:
                 + QString::number(getTypeIdFromName(worker.type)) + ", " + worker.telephone + ", "
                 + QString::number(worker.dateOfEmployment) + ", "
                 + QString::number(worker.baseSalary);
-        //todo: изменить на вызов dbhelper
-        DbService::getInstance()->execute("INSERT INTO worker "
-            "(name,patronimic,surname,address,type_id,telephone,date_of_employment, base_salary)"
-            " VALUES (" + values + ")");
+        DbService::getInstance()->insertRow(
+            "worker",
+            "(name,patronimic,surname,address,type_id,telephone,date_of_employment, base_salary)",
+            values
+        );
     }
 
 private:

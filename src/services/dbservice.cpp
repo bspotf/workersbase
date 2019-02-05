@@ -43,18 +43,9 @@ int DbService::insertTable(QString tableName, QString attributes)
     return 0;
 }
 
-int DbService::insertRow(QString tableName, QString attributes)
+int DbService::insertRow(QString tableName, QString columns, QString attributes)
 {
-    this->query.prepare("INSERT INTO ? VALUES (?)");
-    this->query.addBindValue(tableName);
-    this->query.addBindValue(attributes);
-    if (!this->query.exec()) {
-        qDebug("Error occurred inserting.");
-        qDebug("%s.", qPrintable(this->query.lastError().text()));
-        qDebug("%s.", qPrintable(this->db.lastError().text()));
-        return -1;
-    }
-    return 0;
+    this->execute("INSERT INTO " + tableName + columns + " VALUES (" + attributes + ")");
 }
 
 QSqlQuery DbService::find(QString tableName, QString neededColumns, QString attributes)

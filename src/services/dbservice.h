@@ -48,12 +48,13 @@ public:
     int insertTable(QString tableName, QString attributes);
 
     /**
-     * @brief inserts a row into a table
+     * @brief insertRow
      * @param tableName
+     * @param columns
      * @param attributes
      * @return
      */
-    int insertRow(QString tableName, QString attributes);
+    int insertRow(QString tableName, QString columns, QString attributes);
 
     /**
      * @brief DbService::find
