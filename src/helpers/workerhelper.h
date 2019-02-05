@@ -27,16 +27,15 @@ struct WorkerSalaryParams{
     int employeeLevelBonus;
 
     WorkerSalaryParams(
-            int id,
-            int dateOfEmployment,
-            int workerType,
-            double baseSalary,
-            double percentPerYear,
-            double yearIncreasePercentBorder,
-            double percentForEmployees,
-            int employeeLevelBonus
-        )
-    {
+        int id,
+        int dateOfEmployment,
+        int workerType,
+        double baseSalary,
+        double percentPerYear,
+        double yearIncreasePercentBorder,
+        double percentForEmployees,
+        int employeeLevelBonus
+    ) {
         this->id = id;
         this->dateOfEmployment = dateOfEmployment;
         this->workerType = workerType;
@@ -55,22 +54,36 @@ struct Worker{
     QString surname;
     double baseSalary;
     QString type;
+    QString address;
+    QString telephone;
+    int64_t dateOfEmployment;
 
-    Worker(int id, QString name, QString patronimic, QString surname, double baseSalary, QString type)
-    {
+    Worker(
+       int id,
+       QString name,
+       QString patronimic,
+       QString surname,
+       double baseSalary,
+       QString type,
+       QString address = "",
+       QString telephone = "",
+       int64_t dateOfEmployment = NULL
+    ) {
         this->id = id;
         this->name = name;
         this->patronimic = patronimic;
         this->surname = surname;
         this->baseSalary = baseSalary;
         this->type = type;
+        this->address = address;
+        this->telephone = telephone;
+        this->dateOfEmployment = dateOfEmployment;
     }
 };
 
 class WorkerHelper
 {
 public:
-
     /**
      * @brief getmanagedEmploees
      * @param id
@@ -79,12 +92,12 @@ public:
     static std::vector<int> getmanagedEmploees(int& id)
     {
         QSqlQuery managedEmployees = DbService::getInstance()->findAndLeftJoin(
-                    "worker w",
-                    "w.id = " + QString::number(id) + " AND r.employee_id NOT NULL",
-                    "relation r",
-                    "r.manager_id = w.id",
-                    "w.id, w.type_id,r.employee_id"
-                );
+            "worker w",
+            "w.id = " + QString::number(id) + " AND r.employee_id NOT NULL",
+            "relation r",
+            "r.manager_id = w.id",
+            "w.id, w.type_id,r.employee_id"
+        );
 
         std::vector<int> employeeIds;
 
@@ -92,6 +105,7 @@ public:
         {
             employeeIds.push_back(managedEmployees.value(2).toInt());
         }
+
         return employeeIds;
     }
 
@@ -141,6 +155,11 @@ public:
         return std::make_shared<WorkerSalaryParams>(workerSalaryParams);
     }
 
+    /**
+     * @brief getWorkers
+     * @param condition
+     * @return
+     */
     static QSqlQuery getWorkers(QString condition = "w.id NOT NULL")
     {
         condition = (condition != "") ? condition : "w.id NOT NULL";
@@ -154,6 +173,11 @@ public:
         return query;
     }
 
+    /**
+     * @brief createWorkersList
+     * @param query
+     * @return
+     */
     static std::vector<Worker> createWorkersList(QSqlQuery& query){
         std::vector<Worker> workers;
         while(query.next())
@@ -169,6 +193,46 @@ public:
             workers.push_back(worker);
         }
         return workers;
+    }
+
+    /**
+     * @brief createWorker
+     * @param worker
+     */
+    static void createWorker(Worker &worker)
+    {
+
+        QString values = "\"" + worker.name + "\", \"" + worker.patronimic + "\", \""
+                + worker.surname + "\", \"" + worker.address + "\", "
+                + QString::number(getTypeIdFromName(worker.type)) + ", " + worker.telephone + ", "
+                + QString::number(worker.dateOfEmployment) + ", "
+                + QString::number(worker.baseSalary);
+        //todo: изменить на вызов dbhelper
+        DbService::getInstance()->execute("INSERT INTO worker "
+            "(name,patronimic,surname,address,type_id,telephone,date_of_employment, base_salary)"
+            " VALUES (" + values + ")");
+    }
+
+private:
+
+    /**
+     * @brief getTypeIdFromName
+     * @param type
+     * @return
+     */
+    static int getTypeIdFromName(QString &type)
+    {
+        if (type == "Employee") {
+            return 1;
+        }
+        else if (type == "Manager") {
+            return 2;
+        }
+        else if (type == "Sales") {
+            return 3;
+        }
+
+        return NULL;
     }
 };
 #endif // WORKERHELPER_H

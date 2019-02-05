@@ -22,32 +22,45 @@ CreateWorkerForm::~CreateWorkerForm()
 
 void CreateWorkerForm::on_pushButton_clicked()
 {
-    QString name = ui->lineEditName->text();
-    QString patronimic = ui->lineEditPatronimic->text();
-    QString surname = ui->lineEditSurname->text();
-    int type = ui->comboBoxType->currentIndex() + 1;
-    QString telephone = ui->lineEditTelephone->text();
-    QString address = ui->lineEditAddress->text();
-    double baseSalary = ui->spinBoxSalary->value();
-    int64_t dateOfEmployment = ui->dateEditDateOfEmployment->dateTime().toMSecsSinceEpoch()/1000;
+    Worker worker(
+        NULL,
+        ui->lineEditName->text(),
+        ui->lineEditPatronimic->text(),
+        ui->lineEditSurname->text(),
+        static_cast<double>(ui->spinBoxSalary->value()),
+        ui->comboBoxType->currentText(),
+        ui->lineEditAddress->text(),
+        ui->lineEditTelephone->text(),
+        ui->dateEditDateOfEmployment->dateTime().toMSecsSinceEpoch()/1000
+    );
 
-    if (name == "" || patronimic == "" || surname == ""
-            || !type || telephone == "" || address == "" || !baseSalary)
+    if (!this->validateForm())
     {
-        ui->labelCheckParams->setText("ERROR:Check parameters");
+        ui->labelCheckParams->setText("ERROR: One or more empty params");
         return;
     }
 
-    QString values = "\"" + name + "\", \"" + patronimic + "\", \""
-            + surname + "\", \"" + address + "\", "
-            + QString::number(type) + ", " + telephone + ", "
-            + QString::number(dateOfEmployment) + ", "
-            + QString::number(baseSalary);
-
-    //костыль, есть риск получить инъекцию, так делать не нужно)
-    DbService::getInstance()->execute("INSERT INTO worker "
-        "(name,patronimic,surname,address,type_id,telephone,date_of_employment, base_salary)"
-        " VALUES (" + values + ")");
+    WorkerHelper::createWorker(worker);
 
     this->~CreateWorkerForm();
+}
+
+/**
+ * Simple validator
+ *
+ * @brief CreateWorkerForm::validateForm
+ * @param worker
+ * @return
+ */
+bool CreateWorkerForm::validateForm()
+{
+    return !(
+        ui->lineEditName->text() == ""
+        || ui->lineEditPatronimic->text() == ""
+        || ui->lineEditSurname->text() == ""
+        || ui->comboBoxType->currentText() == ""
+        || ui->lineEditTelephone->text() == ""
+        || ui->lineEditAddress->text() == ""
+        || !ui->spinBoxSalary->value()
+    );
 }

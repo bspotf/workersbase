@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <src/helpers/workerhelper.h>
+
 namespace Ui {
 class CreateWorkerForm;
 }
@@ -20,6 +22,7 @@ private slots:
 
 private:
     Ui::CreateWorkerForm *ui;
+    bool validateForm();
 };
 
 #endif // CREATEWORKERFORM_H
