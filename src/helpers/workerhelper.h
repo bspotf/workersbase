@@ -67,7 +67,7 @@ struct Worker{
        QString type,
        QString address = "",
        QString telephone = "",
-       int64_t dateOfEmployment = NULL
+       int64_t dateOfEmployment = 0
     ) {
         this->id = id;
         this->name = name;
@@ -233,7 +233,7 @@ private:
             return 3;
         }
 
-        return NULL;
+        return 0;
     }
 };
 #endif // WORKERHELPER_H

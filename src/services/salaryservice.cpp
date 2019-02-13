@@ -69,7 +69,7 @@ double SalaryService::getYearsOfWorkPercent(double percentPerYear, int years, do
 double SalaryService::countSalaryExpences(int64_t date)
 {
     QSqlQuery workers = DbService::getInstance()->find("worker", "id");
-    double total;
+    double total = 0;
     while(workers.next())
     {
         double id = workers.value(0).toInt();
